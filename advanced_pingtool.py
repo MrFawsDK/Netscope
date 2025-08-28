@@ -241,7 +241,7 @@ if __name__ == "__main__":
     print("[DEBUG] Starter PingTool...")
     while True:
         menu()
-    valg = input("Vælg handling (1-10): ").strip()
+        valg = input("Vælg handling (1-10): ").strip()
         if valg == "1":
             targets = input("Indtast domæner/IP'er (kommasepareret, Enter for standard): ").strip()
             if not targets:
