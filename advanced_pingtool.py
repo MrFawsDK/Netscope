@@ -93,61 +93,83 @@ def main():
         print("---")
     print("\nTjek domæner og ping mellem IP'er kan tilføjes efter behov.")
 
+def menu():
+    print("\n=== PingTool Menu ===")
+    print("1. Ping domæne/IP")
+    print("2. DNS-opslag (find IP fra domæne)")
+    print("3. Geolokation for IP")
+    print("4. Vis lokal IP")
+    print("5. Vis standard-servere")
+    print("6. Afslut")
+    print("=====================")
+
 if __name__ == "__main__":
     print("[DEBUG] Starter PingTool...")
-    try:
-        local_ip = get_local_ip()
-        print(f"Din lokale IP: {local_ip}")
-    except Exception as e:
-        print(f"[DEBUG] Fejl ved hentning af lokal IP: {e}")
-    print()
-    print("Vælg domæner/IP'er du vil ping (kommasepareret, fx google.com,8.8.8.8):")
-    try:
-        user_input = input("> ").strip()
-        print(f"[DEBUG] Input modtaget: {user_input}")
-    except Exception as e:
-        print(f"[DEBUG] Fejl ved input: {e}")
-        user_input = ''
-    if not user_input:
-        print("[DEBUG] Ingen input modtaget, bruger standard-servere.")
-        targets = SERVERS
-    else:
-        targets = [x.strip() for x in user_input.split(",") if x.strip()]
-        print(f"[DEBUG] Targets valgt: {targets}")
-    print("Hvor mange ping-forsøg pr. server? (standard: 4)")
-    try:
-        count_input = input("> ").strip()
-        print(f"[DEBUG] Ping count input: {count_input}")
-        count = int(count_input)
-        if count < 1:
-            count = 4
-    except Exception as e:
-        print(f"[DEBUG] Fejl ved ping count: {e}")
-        count = 4
-    for server in targets:
-        print(f"Pinger {server}...")
-        try:
-            min_time, avg_time, max_time, loss, output = ping(server, count)
-            print(f"[DEBUG] Ping output for {server}:\n{output}")
-        except Exception as e:
-            print(f"[DEBUG] Fejl ved ping af {server}: {e}")
-            min_time = avg_time = max_time = loss = None
-        try:
-            ip = socket.gethostbyname(server)
-            print(f"[DEBUG] DNS-opslag for {server}: {ip}")
-        except Exception as e:
-            print(f"[DEBUG] Fejl ved DNS-opslag for {server}: {e}")
-            ip = "N/A"
-        try:
-            city, country = get_ip_location(ip) if ip != "N/A" else ("Unknown", "Unknown")
-            print(f"[DEBUG] Geolokation for {ip}: {city}, {country}")
-        except Exception as e:
-            print(f"[DEBUG] Fejl ved geolokation for {ip}: {e}")
-            city, country = "Unknown", "Unknown"
-        print(f"IP: {ip} ({city}, {country})")
-        if min_time is not None:
-            print(f"Min: {min_time} ms, Avg: {avg_time} ms, Max: {max_time} ms, Pakketab: {loss}%")
+    while True:
+        menu()
+        valg = input("Vælg handling (1-6): ").strip()
+        if valg == "1":
+            targets = input("Indtast domæner/IP'er (kommasepareret, Enter for standard): ").strip()
+            if not targets:
+                targets = ",".join(SERVERS)
+            targets = [x.strip() for x in targets.split(",") if x.strip()]
+            try:
+                count = int(input("Antal ping-forsøg pr. server (standard: 4): ").strip())
+                if count < 1:
+                    count = 4
+            except:
+                count = 4
+            for server in targets:
+                print(f"Pinger {server}...")
+                min_time, avg_time, max_time, loss, output = ping(server, count)
+                try:
+                    ip = socket.gethostbyname(server)
+                    print(f"DNS-opslag: {server} -> {ip}")
+                except Exception as e:
+                    print(f"DNS-opslag fejlede for {server}: {e}")
+                    ip = "N/A"
+                try:
+                    city, country = get_ip_location(ip) if ip != "N/A" else ("Unknown", "Unknown")
+                    print(f"Geolokation: {ip} -> {city}, {country}")
+                except Exception as e:
+                    print(f"Geolokation fejlede for {ip}: {e}")
+                    city, country = "Unknown", "Unknown"
+                if min_time is not None:
+                    print(f"Ping-resultat for {server} ({ip}): Min: {min_time} ms, Avg: {avg_time} ms, Max: {max_time} ms, Pakketab: {loss}%")
+                else:
+                    print(f"Ping fejlede for {server} ({ip}) eller ingen svar.")
+                print("---")
+        elif valg == "2":
+            dom = input("Indtast domæne: ").strip()
+            if dom:
+                try:
+                    ip = socket.gethostbyname(dom)
+                    print(f"IP for {dom}: {ip}")
+                except Exception as e:
+                    print(f"DNS-opslag fejlede: {e}")
+            else:
+                print("Du skal indtaste et domæne!")
+        elif valg == "3":
+            ip = input("Indtast IP-adresse: ").strip()
+            if ip:
+                try:
+                    city, country = get_ip_location(ip)
+                    print(f"Geolokation for {ip}: {city}, {country}")
+                except Exception as e:
+                    print(f"Geolokation fejlede: {e}")
+            else:
+                print("Du skal indtaste en IP-adresse!")
+        elif valg == "4":
+            try:
+                print(f"Din lokale IP: {get_local_ip()}")
+            except Exception as e:
+                print(f"Fejl ved hentning af lokal IP: {e}")
+        elif valg == "5":
+            print("Standard-servere:")
+            for s in SERVERS:
+                print(f"- {s}")
+        elif valg == "6":
+            print("Farvel!")
+            break
         else:
-            print("Ping fejlede eller ingen svar.")
-        print("---")
-    print("\nDu kan tilføje domæner/IP'er ved at skrive dem i input.")
+            print("Ugyldigt valg. Prøv igen.")
