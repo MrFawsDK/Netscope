@@ -101,8 +101,80 @@ def menu():
     print("4. Vis lokal IP")
     print("5. Vis standard-servere")
     print("6. Vis WiFi-navn og password for nuværende netværk (kun Windows)")
-    print("7. Vis alle gemte WiFi-netværk og passwords (kun Windows)")
-    print("8. Afslut")
+    print("7. Vis alle synlige WiFi-netværk (kun Windows)")
+    print("8. Vis detaljeret info om synlige WiFi-netværk (kun Windows)")
+    print("9. Vælg gemt WiFi-netværk og se password (kun Windows)")
+    print("10. Afslut")
+def show_visible_wifi_details():
+    if platform.system().lower() != "windows":
+        print("Denne funktion virker kun på Windows.")
+        return
+    try:
+        result = subprocess.check_output(["netsh", "wlan", "show", "networks", "mode=bssid"], universal_newlines=True)
+        print("Detaljeret info om synlige WiFi-netværk:")
+        print(result)
+    except Exception as e:
+        print(f"[FEJL] Kunne ikke hente detaljeret WiFi-info: {e}")
+def show_visible_wifi():
+    if platform.system().lower() != "windows":
+        print("Denne funktion virker kun på Windows.")
+        return
+    try:
+        result = subprocess.check_output(["netsh", "wlan", "show", "networks"], universal_newlines=True)
+        ssids = set()
+        for line in result.splitlines():
+            if "SSID" in line and "BSSID" not in line:
+                ssid = line.split(":",1)[1].strip()
+                if ssid:
+                    ssids.add(ssid)
+        if not ssids:
+            print("Ingen synlige WiFi-netværk fundet.")
+        else:
+            print("Synlige WiFi-netværk:")
+            for ssid in ssids:
+                print(f"- {ssid}")
+    except Exception as e:
+        print(f"[FEJL] Kunne ikke hente synlige WiFi-netværk: {e}")
+
+def choose_saved_wifi_and_show_password():
+    if platform.system().lower() != "windows":
+        print("Denne funktion virker kun på Windows.")
+        return
+    try:
+        result = subprocess.check_output(["netsh", "wlan", "show", "profiles"], universal_newlines=True)
+        profiles = []
+        for line in result.splitlines():
+            if "All User Profile" in line:
+                profile = line.split(":",1)[1].strip()
+                profiles.append(profile)
+        if not profiles:
+            print("Ingen gemte WiFi-profiler fundet.")
+            return
+        print("Gemte WiFi-netværk:")
+        for i, ssid in enumerate(profiles, 1):
+            print(f"{i}. {ssid}")
+        valg = input("Vælg nummer på netværk for at se password: ").strip()
+        try:
+            idx = int(valg) - 1
+            if idx < 0 or idx >= len(profiles):
+                print("Ugyldigt valg.")
+                return
+            ssid = profiles[idx]
+            pw_result = subprocess.check_output(["netsh", "wlan", "show", "profile", ssid, "key=clear"], universal_newlines=True)
+            password = None
+            for pw_line in pw_result.splitlines():
+                if "Key Content" in pw_line:
+                    password = pw_line.split(":",1)[1].strip()
+                    break
+            print(f"WiFi-navn: {ssid}")
+            if password:
+                print(f"WiFi-password: {password}")
+            else:
+                print("WiFi-password ikke fundet eller er ikke gemt.")
+        except Exception as e:
+            print(f"[FEJL] Kunne ikke hente password: {e}")
+    except Exception as e:
+        print(f"[FEJL] Kunne ikke hente WiFi-profiler: {e}")
     print("=====================")
 def show_all_wifi_passwords():
     if platform.system().lower() != "windows":
@@ -169,7 +241,7 @@ if __name__ == "__main__":
     print("[DEBUG] Starter PingTool...")
     while True:
         menu()
-        valg = input("Vælg handling (1-8): ").strip()
+    valg = input("Vælg handling (1-10): ").strip()
         if valg == "1":
             targets = input("Indtast domæner/IP'er (kommasepareret, Enter for standard): ").strip()
             if not targets:
@@ -234,8 +306,12 @@ if __name__ == "__main__":
         elif valg == "6":
             get_wifi_info()
         elif valg == "7":
-            show_all_wifi_passwords()
+            show_visible_wifi()
         elif valg == "8":
+            show_visible_wifi_details()
+        elif valg == "9":
+            choose_saved_wifi_and_show_password()
+        elif valg == "10":
             print("Farvel!")
             break
         else:
