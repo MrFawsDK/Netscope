@@ -100,15 +100,45 @@ def menu():
     print("3. Geolokation for IP")
     print("4. Vis lokal IP")
     print("5. Vis standard-servere")
-    print("6. Afslut")
+    print("6. Vis WiFi-navn og password (kun Windows)")
+    print("7. Afslut")
     print("=====================")
+def get_wifi_info():
+    if platform.system().lower() != "windows":
+        print("WiFi password-funktion virker kun på Windows.")
+        return
+    try:
+        # Find SSID
+        result = subprocess.check_output(["netsh", "wlan", "show", "interfaces"], universal_newlines=True)
+        ssid = None
+        for line in result.splitlines():
+            if "SSID" in line and "BSSID" not in line:
+                ssid = line.split(":",1)[1].strip()
+                break
+        if not ssid:
+            print("Kunne ikke finde WiFi-navn (SSID).")
+            return
+        # Find password
+        result = subprocess.check_output(["netsh", "wlan", "show", "profile", ssid, "key=clear"], universal_newlines=True)
+        password = None
+        for line in result.splitlines():
+            if "Key Content" in line:
+                password = line.split(":",1)[1].strip()
+                break
+        print(f"WiFi-navn: {ssid}")
+        if password:
+            print(f"WiFi-password: {password}")
+        else:
+            print("WiFi-password ikke fundet eller er ikke gemt.")
+    except Exception as e:
+        print(f"[FEJL] Kunne ikke hente WiFi-info: {e}")
 
 if __name__ == "__main__":
     print("[DEBUG] Starter PingTool...")
     while True:
         menu()
-        valg = input("Vælg handling (1-6): ").strip()
-        if valg == "1":
+    valg = input("Vælg handling (1-7): ").strip()
+    if valg == "1":
             targets = input("Indtast domæner/IP'er (kommasepareret, Enter for standard): ").strip()
             if not targets:
                 targets = ",".join(SERVERS)
@@ -170,6 +200,8 @@ if __name__ == "__main__":
             for s in SERVERS:
                 print(f"- {s}")
         elif valg == "6":
+            get_wifi_info()
+        elif valg == "7":
             print("Farvel!")
             break
         else:
