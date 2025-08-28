@@ -100,9 +100,41 @@ def menu():
     print("3. Geolokation for IP")
     print("4. Vis lokal IP")
     print("5. Vis standard-servere")
-    print("6. Vis WiFi-navn og password (kun Windows)")
-    print("7. Afslut")
+    print("6. Vis WiFi-navn og password for nuværende netværk (kun Windows)")
+    print("7. Vis alle gemte WiFi-netværk og passwords (kun Windows)")
+    print("8. Afslut")
     print("=====================")
+def show_all_wifi_passwords():
+    if platform.system().lower() != "windows":
+        print("Denne funktion virker kun på Windows.")
+        return
+    try:
+        result = subprocess.check_output(["netsh", "wlan", "show", "profiles"], universal_newlines=True)
+        profiles = []
+        for line in result.splitlines():
+            if "All User Profile" in line:
+                profile = line.split(":",1)[1].strip()
+                profiles.append(profile)
+        if not profiles:
+            print("Ingen gemte WiFi-profiler fundet.")
+            return
+        for ssid in profiles:
+            print(f"\nWiFi-navn: {ssid}")
+            try:
+                pw_result = subprocess.check_output(["netsh", "wlan", "show", "profile", ssid, "key=clear"], universal_newlines=True)
+                password = None
+                for pw_line in pw_result.splitlines():
+                    if "Key Content" in pw_line:
+                        password = pw_line.split(":",1)[1].strip()
+                        break
+                if password:
+                    print(f"WiFi-password: {password}")
+                else:
+                    print("WiFi-password ikke fundet eller er ikke gemt.")
+            except Exception as e:
+                print(f"[FEJL] Kunne ikke hente password for {ssid}: {e}")
+    except Exception as e:
+        print(f"[FEJL] Kunne ikke hente WiFi-profiler: {e}")
 def get_wifi_info():
     if platform.system().lower() != "windows":
         print("WiFi password-funktion virker kun på Windows.")
@@ -137,8 +169,8 @@ if __name__ == "__main__":
     print("[DEBUG] Starter PingTool...")
     while True:
         menu()
-    valg = input("Vælg handling (1-7): ").strip()
-    if valg == "1":
+        valg = input("Vælg handling (1-8): ").strip()
+        if valg == "1":
             targets = input("Indtast domæner/IP'er (kommasepareret, Enter for standard): ").strip()
             if not targets:
                 targets = ",".join(SERVERS)
@@ -202,6 +234,8 @@ if __name__ == "__main__":
         elif valg == "6":
             get_wifi_info()
         elif valg == "7":
+            show_all_wifi_passwords()
+        elif valg == "8":
             print("Farvel!")
             break
         else:
