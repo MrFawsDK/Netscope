@@ -126,18 +126,19 @@ if __name__ == "__main__":
                     ip = socket.gethostbyname(server)
                     print(f"DNS-opslag: {server} -> {ip}")
                 except Exception as e:
-                    print(f"DNS-opslag fejlede for {server}: {e}")
+                    print(f"[FEJL] DNS-opslag fejlede for {server}: {e}\nMulige årsager: Domænet findes ikke, eller der er ingen internetforbindelse.")
                     ip = "N/A"
                 try:
                     city, country = get_ip_location(ip) if ip != "N/A" else ("Unknown", "Unknown")
                     print(f"Geolokation: {ip} -> {city}, {country}")
                 except Exception as e:
-                    print(f"Geolokation fejlede for {ip}: {e}")
+                    print(f"[FEJL] Geolokation fejlede for {ip}: {e}\nMulige årsager: IP-adressen er ugyldig, eller der er ingen internetforbindelse.")
                     city, country = "Unknown", "Unknown"
                 if min_time is not None:
                     print(f"Ping-resultat for {server} ({ip}): Min: {min_time} ms, Avg: {avg_time} ms, Max: {max_time} ms, Pakketab: {loss}%")
                 else:
-                    print(f"Ping fejlede for {server} ({ip}) eller ingen svar.")
+                    print(f"[FEJL] Ping fejlede for {server} ({ip}) eller ingen svar.\nMulige årsager: IP-adressen svarer ikke på ping, er beskyttet af firewall, eller er offline.")
+                    print(f"Rå ping-output:\n{output}")
                 print("---")
         elif valg == "2":
             dom = input("Indtast domæne: ").strip()
@@ -146,7 +147,7 @@ if __name__ == "__main__":
                     ip = socket.gethostbyname(dom)
                     print(f"IP for {dom}: {ip}")
                 except Exception as e:
-                    print(f"DNS-opslag fejlede: {e}")
+                    print(f"[FEJL] DNS-opslag fejlede for {dom}: {e}\nMulige årsager: Domænet findes ikke, eller der er ingen internetforbindelse.")
             else:
                 print("Du skal indtaste et domæne!")
         elif valg == "3":
@@ -156,7 +157,7 @@ if __name__ == "__main__":
                     city, country = get_ip_location(ip)
                     print(f"Geolokation for {ip}: {city}, {country}")
                 except Exception as e:
-                    print(f"Geolokation fejlede: {e}")
+                    print(f"[FEJL] Geolokation fejlede for {ip}: {e}\nMulige årsager: IP-adressen er ugyldig, eller der er ingen internetforbindelse.")
             else:
                 print("Du skal indtaste en IP-adresse!")
         elif valg == "4":
