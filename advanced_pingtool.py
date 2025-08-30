@@ -150,8 +150,8 @@ def security_portscan(target: str, port_start: int = 1, port_end: int = 1024, ti
             pass
         return None
     # Nmap support
-    if nmap:
         try:
+            import nmap
             nm = nmap.PortScanner()
             nm.scan(target, f"{port_start}-{port_end}")
             for proto in nm[target].all_protocols():
@@ -160,8 +160,10 @@ def security_portscan(target: str, port_start: int = 1, port_end: int = 1024, ti
                     open_ports.append((port, service))
             if open_ports:
                 return open_ports
+        except ImportError:
+            print("Nmap-biblioteket er ikke installeret. Socket bruges som fallback. Installer med: pip install python-nmap")
         except Exception as e:
-                    print(f"Nmap fejlede, bruger socket fallback: {e}")
+            print(f"Nmap fejlede, bruger socket fallback: {e}")
     # Socket fallback
     with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = {executor.submit(scan_port, p): p for p in range(port_start, port_end+1)}
