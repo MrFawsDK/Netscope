@@ -56,7 +56,8 @@ function updatePageTitle(sectionId) {
         geolocation: { title: 'IP Geolocation', desc: 'Find geographic location of IP addresses' },
         localip: { title: 'Local IP', desc: 'Discover your local network IP address' },
         servers: { title: 'Standard Servers', desc: 'Monitor connectivity to common internet services' },
-        wifi: { title: 'WiFi Tools', desc: 'WiFi network management and diagnostics' }
+        wifi: { title: 'WiFi Tools', desc: 'WiFi network management and diagnostics' },
+        settings: { title: 'Indstillinger', desc: 'Configure NetScope preferences and appearance' }
     };
     
     const info = titles[sectionId] || titles.dashboard;
@@ -72,7 +73,8 @@ function getSectionName(sectionId) {
         geolocation: 'IP Geolocation',
         localip: 'Local IP',
         servers: 'Standard Servers',
-        wifi: 'WiFi Tools'
+        wifi: 'WiFi Tools',
+        settings: 'Settings'
     };
     return names[sectionId] || 'Unknown';
 }
@@ -772,4 +774,221 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('geoInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') performGeolocation();
     });
+    
+    // Load settings on page load
+    loadSettings();
 });
+
+// Settings functionality
+const DEFAULT_SETTINGS = {
+    theme: 'dark',
+    accentColor: '#007acc',
+    pingCount: 4,
+    timeout: 3000,
+    autoRefresh: false,
+    showTimestamps: true,
+    activityLogLimit: 100,
+    compactMode: false
+};
+
+let userSettings = { ...DEFAULT_SETTINGS };
+
+function loadSettings() {
+    const saved = localStorage.getItem('netscope-settings');
+    if (saved) {
+        try {
+            userSettings = { ...DEFAULT_SETTINGS, ...JSON.parse(saved) };
+        } catch (e) {
+            console.error('Error loading settings:', e);
+            userSettings = { ...DEFAULT_SETTINGS };
+        }
+    }
+    
+    // Apply loaded settings
+    applySettings();
+    updateSettingsUI();
+}
+
+function saveSettings() {
+    localStorage.setItem('netscope-settings', JSON.stringify(userSettings));
+    addActivity('Settings saved');
+}
+
+function applySettings() {
+    // Apply theme
+    if (userSettings.theme === 'light') {
+        document.body.classList.add('light-theme');
+    } else {
+        document.body.classList.remove('light-theme');
+    }
+    
+    // Apply accent color
+    document.documentElement.style.setProperty('--accent-color', userSettings.accentColor);
+    
+    // Apply compact mode
+    if (userSettings.compactMode) {
+        document.body.classList.add('compact-mode');
+    } else {
+        document.body.classList.remove('compact-mode');
+    }
+}
+
+function updateSettingsUI() {
+    document.getElementById('theme-select').value = userSettings.theme;
+    document.getElementById('accent-color').value = userSettings.accentColor;
+    document.getElementById('ping-count').value = userSettings.pingCount;
+    document.getElementById('timeout-setting').value = userSettings.timeout;
+    document.getElementById('auto-refresh').checked = userSettings.autoRefresh;
+    document.getElementById('show-timestamps').checked = userSettings.showTimestamps;
+    document.getElementById('activity-log-limit').value = userSettings.activityLogLimit;
+    document.getElementById('compact-mode').checked = userSettings.compactMode;
+}
+
+function changeTheme(theme) {
+    userSettings.theme = theme;
+    applySettings();
+    saveSettings();
+    addActivity(`Theme changed to ${theme}`);
+}
+
+function changeAccentColor(color) {
+    userSettings.accentColor = color;
+    applySettings();
+    saveSettings();
+    addActivity(`Accent color changed`);
+}
+
+function savePingCount(count) {
+    userSettings.pingCount = parseInt(count);
+    saveSettings();
+    addActivity(`Default ping count set to ${count}`);
+}
+
+function saveTimeout(timeout) {
+    userSettings.timeout = parseInt(timeout);
+    saveSettings();
+    addActivity(`Timeout set to ${timeout}ms`);
+}
+
+function toggleAutoRefresh(enabled) {
+    userSettings.autoRefresh = enabled;
+    saveSettings();
+    
+    if (enabled) {
+        startAutoRefresh();
+        addActivity('Auto-refresh enabled');
+    } else {
+        stopAutoRefresh();
+        addActivity('Auto-refresh disabled');
+    }
+}
+
+function toggleTimestamps(enabled) {
+    userSettings.showTimestamps = enabled;
+    saveSettings();
+    addActivity(`Timestamps ${enabled ? 'enabled' : 'disabled'}`);
+}
+
+function setActivityLogLimit(limit) {
+    userSettings.activityLogLimit = parseInt(limit);
+    
+    // Trim activity log if needed
+    if (recentActivities.length > userSettings.activityLogLimit) {
+        recentActivities = recentActivities.slice(-userSettings.activityLogLimit);
+        updateActivityLog();
+    }
+    
+    saveSettings();
+    addActivity(`Activity log limit set to ${limit}`);
+}
+
+function toggleCompactMode(enabled) {
+    userSettings.compactMode = enabled;
+    applySettings();
+    saveSettings();
+    addActivity(`Compact mode ${enabled ? 'enabled' : 'disabled'}`);
+}
+
+function exportSettings() {
+    const dataStr = JSON.stringify(userSettings, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = 'netscope-settings.json';
+    link.click();
+    
+    addActivity('Settings exported');
+}
+
+function importSettings(input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const imported = JSON.parse(e.target.result);
+            userSettings = { ...DEFAULT_SETTINGS, ...imported };
+            applySettings();
+            updateSettingsUI();
+            saveSettings();
+            addActivity('Settings imported successfully');
+        } catch (error) {
+            alert('Error importing settings: Invalid file format');
+            addActivity('Failed to import settings');
+        }
+    };
+    reader.readAsText(file);
+    
+    // Reset input
+    input.value = '';
+}
+
+function resetSettings() {
+    if (confirm('Are you sure you want to reset all settings to default?')) {
+        userSettings = { ...DEFAULT_SETTINGS };
+        applySettings();
+        updateSettingsUI();
+        saveSettings();
+        addActivity('Settings reset to default');
+    }
+}
+
+function clearActivityLog() {
+    if (confirm('Are you sure you want to clear the activity log?')) {
+        recentActivities = [];
+        updateActivityLog();
+        addActivity('Activity log cleared');
+    }
+}
+
+// Auto-refresh functionality
+let autoRefreshInterval = null;
+
+function startAutoRefresh() {
+    if (autoRefreshInterval) return;
+    
+    autoRefreshInterval = setInterval(() => {
+        if (currentSection === 'dashboard') {
+            refreshDashboard();
+        }
+    }, 30000); // 30 seconds
+}
+
+function stopAutoRefresh() {
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+    }
+}
+
+function refreshDashboard() {
+    // Simulate dashboard refresh
+    addActivity('Dashboard auto-refreshed');
+}
+
+// Enhanced openSettings function
+function openSettings() {
+    showSection('settings');
+}

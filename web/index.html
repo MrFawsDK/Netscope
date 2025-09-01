@@ -58,6 +58,16 @@
                 </ul>
             </div>
 
+            <div class="nav-section">
+                <div class="nav-title">System</div>
+                <ul class="nav-menu">
+                    <li class="nav-item" onclick="showSection('settings')">
+                        <i class="fas fa-cog"></i>
+                        <span>Indstillinger</span>
+                    </li>
+                </ul>
+            </div>
+
             <div class="sidebar-footer">
                 <div class="theme-switcher">
                     <button onclick="toggleTheme()" class="theme-btn">
@@ -410,6 +420,118 @@
                         <div class="disabled-function">
                             <i class="fas fa-ban"></i>
                             <span>Saved WiFi Passwords</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings -->
+                <div id="settings" class="section">
+                    <div class="section-header">
+                        <i class="fas fa-cog"></i>
+                        <h2>Indstillinger</h2>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <!-- Theme Settings -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-palette"></i> Udseende</h3>
+                            <div class="setting-item">
+                                <label for="theme-select">Tema:</label>
+                                <select id="theme-select" onchange="changeTheme(this.value)">
+                                    <option value="dark">Mørkt</option>
+                                    <option value="light">Lyst</option>
+                                    <option value="auto">Automatisk</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label for="accent-color">Accent farve:</label>
+                                <select id="accent-color" onchange="changeAccentColor(this.value)">
+                                    <option value="#007acc">Blå (Standard)</option>
+                                    <option value="#28a745">Grøn</option>
+                                    <option value="#dc3545">Rød</option>
+                                    <option value="#ffc107">Gul</option>
+                                    <option value="#6f42c1">Lilla</option>
+                                    <option value="#e83e8c">Pink</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Network Settings -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-network-wired"></i> Netværk</h3>
+                            <div class="setting-item">
+                                <label for="ping-count">Standard ping antal:</label>
+                                <input type="number" id="ping-count" min="1" max="20" value="4" onchange="savePingCount(this.value)">
+                            </div>
+                            <div class="setting-item">
+                                <label for="timeout-setting">Timeout (ms):</label>
+                                <input type="number" id="timeout-setting" min="1000" max="10000" step="500" value="3000" onchange="saveTimeout(this.value)">
+                            </div>
+                            <div class="setting-item">
+                                <label for="auto-refresh">Auto-opdater dashboard:</label>
+                                <input type="checkbox" id="auto-refresh" onchange="toggleAutoRefresh(this.checked)">
+                                <span class="setting-description">Opdater automatisk hvert 30. sekund</span>
+                            </div>
+                        </div>
+
+                        <!-- Display Settings -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-desktop"></i> Visning</h3>
+                            <div class="setting-item">
+                                <label for="show-timestamps">Vis tidsstempler:</label>
+                                <input type="checkbox" id="show-timestamps" checked onchange="toggleTimestamps(this.checked)">
+                            </div>
+                            <div class="setting-item">
+                                <label for="activity-log-limit">Aktivitetslog grænse:</label>
+                                <select id="activity-log-limit" onchange="setActivityLogLimit(this.value)">
+                                    <option value="50">50 linjer</option>
+                                    <option value="100" selected>100 linjer</option>
+                                    <option value="200">200 linjer</option>
+                                    <option value="500">500 linjer</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label for="compact-mode">Kompakt tilstand:</label>
+                                <input type="checkbox" id="compact-mode" onchange="toggleCompactMode(this.checked)">
+                                <span class="setting-description">Reducer mellemrum og padding</span>
+                            </div>
+                        </div>
+
+                        <!-- Data Settings -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-database"></i> Data</h3>
+                            <div class="setting-item">
+                                <button class="btn btn-secondary" onclick="exportSettings()">
+                                    <i class="fas fa-download"></i> Eksporter indstillinger
+                                </button>
+                            </div>
+                            <div class="setting-item">
+                                <input type="file" id="import-settings" accept=".json" style="display: none;" onchange="importSettings(this)">
+                                <button class="btn btn-secondary" onclick="document.getElementById('import-settings').click()">
+                                    <i class="fas fa-upload"></i> Importer indstillinger
+                                </button>
+                            </div>
+                            <div class="setting-item">
+                                <button class="btn btn-danger" onclick="resetSettings()">
+                                    <i class="fas fa-undo"></i> Nulstil til standard
+                                </button>
+                            </div>
+                            <div class="setting-item">
+                                <button class="btn btn-secondary" onclick="clearActivityLog()">
+                                    <i class="fas fa-trash"></i> Ryd aktivitetslog
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- About -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-info-circle"></i> Om NetScope</h3>
+                            <div class="about-info">
+                                <p><strong>Version:</strong> 2.0.0</p>
+                                <p><strong>Udviklet af:</strong> <a href="https://fawsdev.dk" target="_blank">FawsDev</a></p>
+                                <p><strong>GitHub:</strong> <a href="https://github.com/MrFawsDK/NetScope" target="_blank">NetScope Repository</a></p>
+                                <p class="setting-description">NetScope er et omfattende netværksdiagnostik værktøj til både desktop og web.</p>
+                            </div>
                         </div>
                     </div>
                 </div>

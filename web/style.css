@@ -815,3 +815,195 @@ body {
         gap: 0.75rem;
     }
 }
+
+/* Settings Section */
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+}
+
+.settings-group {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: var(--transition);
+}
+
+.settings-group:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+.settings-group h3 {
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 1.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.setting-item:last-child {
+    margin-bottom: 0;
+}
+
+.setting-item label {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.setting-item input[type="text"],
+.setting-item input[type="number"],
+.setting-item select {
+    background: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.setting-item input[type="text"]:focus,
+.setting-item input[type="number"]:focus,
+.setting-item select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px var(--accent-color)20;
+}
+
+.setting-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent-color);
+    margin-right: 0.5rem;
+}
+
+.setting-item input[type="checkbox"] + span {
+    display: inline;
+    margin-left: 0.5rem;
+}
+
+.setting-description {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+.about-info {
+    line-height: 1.6;
+}
+
+.about-info p {
+    margin: 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.about-info strong {
+    color: var(--accent-color);
+}
+
+.about-info a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.about-info a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+/* Button Styles for Settings */
+.btn {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.btn-secondary {
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+/* Responsive Settings */
+@media (max-width: 768px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .settings-group {
+        padding: 1rem;
+    }
+}
+
+/* Compact Mode */
+body.compact-mode .content-area {
+    padding: 1rem;
+}
+
+body.compact-mode .section-header {
+    margin-bottom: 1rem;
+}
+
+body.compact-mode .dashboard-grid,
+body.compact-mode .tool-grid {
+    gap: 1rem;
+}
+
+body.compact-mode .stats-card,
+body.compact-mode .tool-card {
+    padding: 1rem;
+}
+
+body.compact-mode .settings-group {
+    padding: 1rem;
+}
+
+body.compact-mode .setting-item {
+    margin-bottom: 1rem;
+}
