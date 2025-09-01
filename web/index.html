@@ -523,6 +523,169 @@
                             </div>
                         </div>
 
+                        <!-- Performance Settings -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-tachometer-alt"></i> Ydeevne</h3>
+                            <div class="setting-item">
+                                <label for="max-concurrent-pings">Maksimale samtidige pings:</label>
+                                <select id="max-concurrent-pings" onchange="setMaxConcurrentPings(this.value)">
+                                    <option value="1">1 (Langsom, pålidelig)</option>
+                                    <option value="3" selected>3 (Balanceret)</option>
+                                    <option value="5">5 (Hurtig)</option>
+                                    <option value="10">10 (Meget hurtig)</option>
+                                </select>
+                                <span class="setting-description">Flere samtidige pings giver hurtigere resultater men kan belaste netværket</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="cache-dns">Cache DNS opslag:</label>
+                                <input type="checkbox" id="cache-dns" checked onchange="toggleDnsCache(this.checked)">
+                                <span class="setting-description">Gem DNS resultater for hurtigere efterfølgende opslag</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="cache-duration">Cache varighed (minutter):</label>
+                                <input type="number" id="cache-duration" min="1" max="60" value="15" onchange="setCacheDuration(this.value)">
+                            </div>
+                            <div class="setting-item">
+                                <label for="background-monitoring">Baggrundsovervågning:</label>
+                                <input type="checkbox" id="background-monitoring" onchange="toggleBackgroundMonitoring(this.checked)">
+                                <span class="setting-description">Overvåg netværksstatus selvom siden ikke er aktiv</span>
+                            </div>
+                        </div>
+
+                        <!-- Notification Settings -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-bell"></i> Notifikationer</h3>
+                            <div class="setting-item">
+                                <label for="enable-notifications">Aktivér browser notifikationer:</label>
+                                <input type="checkbox" id="enable-notifications" onchange="toggleNotifications(this.checked)">
+                                <span class="setting-description">Få besked om netværksproblemer og vigtige begivenheder</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="notification-timeout-threshold">Notificer ved timeout over (ms):</label>
+                                <input type="number" id="notification-timeout-threshold" min="1000" max="30000" step="500" value="5000" onchange="setNotificationThreshold(this.value)">
+                            </div>
+                            <div class="setting-item">
+                                <label for="sound-alerts">Lyd alarmer:</label>
+                                <input type="checkbox" id="sound-alerts" onchange="toggleSoundAlerts(this.checked)">
+                                <span class="setting-description">Afspil lyd ved fejl og advarsler</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="alert-volume">Alarm lydstyrke:</label>
+                                <input type="range" id="alert-volume" min="0" max="100" value="50" onchange="setAlertVolume(this.value)">
+                                <span class="setting-description">Lydstyrke: <span id="volume-display">50%</span></span>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Network Settings -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-cogs"></i> Avancerede netværksindstillinger</h3>
+                            <div class="setting-item">
+                                <label for="ipv6-support">IPv6 understøttelse:</label>
+                                <input type="checkbox" id="ipv6-support" onchange="toggleIPv6Support(this.checked)">
+                                <span class="setting-description">Aktivér IPv6 adresser i tests og opslag</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="dns-servers">Foretrukne DNS servere:</label>
+                                <textarea id="dns-servers" rows="3" placeholder="8.8.8.8&#10;1.1.1.1&#10;208.67.222.222" onchange="setDnsServers(this.value)"></textarea>
+                                <span class="setting-description">En DNS server per linje (IPv4 eller IPv6)</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="retry-attempts">Gentagelsesforsøg ved fejl:</label>
+                                <input type="number" id="retry-attempts" min="0" max="5" value="2" onchange="setRetryAttempts(this.value)">
+                                <span class="setting-description">Antal automatiske gentagelser ved mislykkede forespørgsler</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="connection-test-interval">Forbindelsestest interval (sekunder):</label>
+                                <input type="number" id="connection-test-interval" min="10" max="300" value="60" onchange="setConnectionTestInterval(this.value)">
+                                <span class="setting-description">Hvor ofte NetScope automatisk tester internetforbindelsen</span>
+                            </div>
+                        </div>
+
+                        <!-- Security & Privacy Settings -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-shield-alt"></i> Sikkerhed & Privatliv</h3>
+                            <div class="setting-item">
+                                <label for="anonymize-ips">Anonymiser IP adresser i logs:</label>
+                                <input type="checkbox" id="anonymize-ips" onchange="toggleIPAnonymization(this.checked)">
+                                <span class="setting-description">Skjul de sidste cifre i IP adresser for privatliv</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="clear-data-on-close">Ryd data ved lukning:</label>
+                                <input type="checkbox" id="clear-data-on-close" onchange="toggleClearDataOnClose(this.checked)">
+                                <span class="setting-description">Automatisk slet alle logs og midlertidige data når browseren lukkes</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="geolocation-precision">Geolokation præcision:</label>
+                                <select id="geolocation-precision" onchange="setGeolocationPrecision(this.value)">
+                                    <option value="city">By niveau</option>
+                                    <option value="region" selected>Region niveau</option>
+                                    <option value="country">Land niveau</option>
+                                </select>
+                                <span class="setting-description">Hvor detaljerede geolokation informationer der vises</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="block-malicious-domains">Blokér mistænkelige domæner:</label>
+                                <input type="checkbox" id="block-malicious-domains" checked onchange="toggleMaliciousDomainBlocking(this.checked)">
+                                <span class="setting-description">Advar eller blokér adgang til kendte skadelige domæner</span>
+                            </div>
+                        </div>
+
+                        <!-- Accessibility -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-universal-access"></i> Tilgængelighed</h3>
+                            <div class="setting-item">
+                                <label for="high-contrast">Høj kontrast tilstand:</label>
+                                <input type="checkbox" id="high-contrast" onchange="toggleHighContrast(this.checked)">
+                                <span class="setting-description">Øg kontrasten for bedre synlighed</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="font-size">Skriftstørrelse:</label>
+                                <select id="font-size" onchange="setFontSize(this.value)">
+                                    <option value="small">Lille</option>
+                                    <option value="normal" selected>Normal</option>
+                                    <option value="large">Stor</option>
+                                    <option value="extra-large">Ekstra stor</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label for="reduce-motion">Reducér animationer:</label>
+                                <input type="checkbox" id="reduce-motion" onchange="toggleReduceMotion(this.checked)">
+                                <span class="setting-description">Minimér bevægelse og overgange for tilgængelighed</span>
+                            </div>
+                        </div>
+
+                        <!-- Developer Settings -->
+                        <div class="settings-group">
+                            <h3><i class="fas fa-code"></i> Udviklerindstillinger</h3>
+                            <div class="setting-item">
+                                <label for="debug-mode">Debug tilstand:</label>
+                                <input type="checkbox" id="debug-mode" onchange="toggleDebugMode(this.checked)">
+                                <span class="setting-description">Vis detaljerede logs og tekniske informationer</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="api-endpoints">Brugerdefinerede API endpoints:</label>
+                                <textarea id="api-endpoints" rows="4" placeholder='{"geolocation": "https://api.custom.com/geo", "dns": "https://api.custom.com/dns"}' onchange="setCustomAPIEndpoints(this.value)"></textarea>
+                                <span class="setting-description">JSON format med brugerdefinerede API endpoints</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="export-raw-data">Eksporter rådata:</label>
+                                <button class="btn btn-secondary" onclick="exportRawData()">
+                                    <i class="fas fa-file-code"></i> Eksporter JSON data
+                                </button>
+                                <span class="setting-description">Download alle gemte data som JSON fil</span>
+                            </div>
+                            <div class="setting-item">
+                                <label for="console-logging">Konsol logging niveau:</label>
+                                <select id="console-logging" onchange="setConsoleLogging(this.value)">
+                                    <option value="none">Ingen</option>
+                                    <option value="error">Kun fejl</option>
+                                    <option value="warn">Advarsler og fejl</option>
+                                    <option value="info" selected>Info, advarsler og fejl</option>
+                                    <option value="debug">Alt (Debug)</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- About -->
                         <div class="settings-group">
                             <h3><i class="fas fa-info-circle"></i> Om NetScope</h3>

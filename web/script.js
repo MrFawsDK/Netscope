@@ -788,7 +788,35 @@ const DEFAULT_SETTINGS = {
     autoRefresh: false,
     showTimestamps: true,
     activityLogLimit: 100,
-    compactMode: false
+    compactMode: false,
+    // Performance settings
+    maxConcurrentPings: 3,
+    cacheDns: true,
+    cacheDuration: 15,
+    backgroundMonitoring: false,
+    // Notification settings
+    enableNotifications: false,
+    notificationTimeoutThreshold: 5000,
+    soundAlerts: false,
+    alertVolume: 50,
+    // Advanced network settings
+    ipv6Support: false,
+    dnsServers: '8.8.8.8\n1.1.1.1\n208.67.222.222',
+    retryAttempts: 2,
+    connectionTestInterval: 60,
+    // Security & privacy settings
+    anonymizeIPs: false,
+    clearDataOnClose: false,
+    geolocationPrecision: 'region',
+    blockMaliciousDomains: true,
+    // Accessibility settings
+    highContrast: false,
+    fontSize: 'normal',
+    reduceMotion: false,
+    // Developer settings
+    debugMode: false,
+    apiEndpoints: '',
+    consoleLogging: 'info'
 };
 
 let userSettings = { ...DEFAULT_SETTINGS };
@@ -831,6 +859,29 @@ function applySettings() {
     } else {
         document.body.classList.remove('compact-mode');
     }
+    
+    // Apply high contrast mode
+    if (userSettings.highContrast) {
+        document.body.classList.add('high-contrast');
+    } else {
+        document.body.classList.remove('high-contrast');
+    }
+    
+    // Apply font size
+    document.body.classList.remove('font-small', 'font-normal', 'font-large', 'font-extra-large');
+    document.body.classList.add(`font-${userSettings.fontSize.replace('-', '-')}`);
+    
+    // Apply reduce motion
+    if (userSettings.reduceMotion) {
+        document.body.classList.add('reduce-motion');
+    } else {
+        document.body.classList.remove('reduce-motion');
+    }
+    
+    // Setup background monitoring if enabled
+    if (userSettings.backgroundMonitoring) {
+        startBackgroundMonitoring();
+    }
 }
 
 function updateSettingsUI() {
@@ -842,6 +893,41 @@ function updateSettingsUI() {
     document.getElementById('show-timestamps').checked = userSettings.showTimestamps;
     document.getElementById('activity-log-limit').value = userSettings.activityLogLimit;
     document.getElementById('compact-mode').checked = userSettings.compactMode;
+    
+    // Performance settings
+    document.getElementById('max-concurrent-pings').value = userSettings.maxConcurrentPings;
+    document.getElementById('cache-dns').checked = userSettings.cacheDns;
+    document.getElementById('cache-duration').value = userSettings.cacheDuration;
+    document.getElementById('background-monitoring').checked = userSettings.backgroundMonitoring;
+    
+    // Notification settings
+    document.getElementById('enable-notifications').checked = userSettings.enableNotifications;
+    document.getElementById('notification-timeout-threshold').value = userSettings.notificationTimeoutThreshold;
+    document.getElementById('sound-alerts').checked = userSettings.soundAlerts;
+    document.getElementById('alert-volume').value = userSettings.alertVolume;
+    document.getElementById('volume-display').textContent = userSettings.alertVolume + '%';
+    
+    // Advanced network settings
+    document.getElementById('ipv6-support').checked = userSettings.ipv6Support;
+    document.getElementById('dns-servers').value = userSettings.dnsServers;
+    document.getElementById('retry-attempts').value = userSettings.retryAttempts;
+    document.getElementById('connection-test-interval').value = userSettings.connectionTestInterval;
+    
+    // Security & privacy settings
+    document.getElementById('anonymize-ips').checked = userSettings.anonymizeIPs;
+    document.getElementById('clear-data-on-close').checked = userSettings.clearDataOnClose;
+    document.getElementById('geolocation-precision').value = userSettings.geolocationPrecision;
+    document.getElementById('block-malicious-domains').checked = userSettings.blockMaliciousDomains;
+    
+    // Accessibility settings
+    document.getElementById('high-contrast').checked = userSettings.highContrast;
+    document.getElementById('font-size').value = userSettings.fontSize;
+    document.getElementById('reduce-motion').checked = userSettings.reduceMotion;
+    
+    // Developer settings
+    document.getElementById('debug-mode').checked = userSettings.debugMode;
+    document.getElementById('api-endpoints').value = userSettings.apiEndpoints;
+    document.getElementById('console-logging').value = userSettings.consoleLogging;
 }
 
 function changeTheme(theme) {
@@ -986,6 +1072,237 @@ function stopAutoRefresh() {
 function refreshDashboard() {
     // Simulate dashboard refresh
     addActivity('Dashboard auto-refreshed');
+}
+
+// Performance Settings Functions
+function setMaxConcurrentPings(count) {
+    userSettings.maxConcurrentPings = parseInt(count);
+    saveSettings();
+    addActivity(`Max concurrent pings set to ${count}`);
+}
+
+function toggleDnsCache(enabled) {
+    userSettings.cacheDns = enabled;
+    saveSettings();
+    addActivity(`DNS caching ${enabled ? 'enabled' : 'disabled'}`);
+}
+
+function setCacheDuration(minutes) {
+    userSettings.cacheDuration = parseInt(minutes);
+    saveSettings();
+    addActivity(`Cache duration set to ${minutes} minutes`);
+}
+
+function toggleBackgroundMonitoring(enabled) {
+    userSettings.backgroundMonitoring = enabled;
+    saveSettings();
+    addActivity(`Background monitoring ${enabled ? 'enabled' : 'disabled'}`);
+    
+    if (enabled) {
+        startBackgroundMonitoring();
+    } else {
+        stopBackgroundMonitoring();
+    }
+}
+
+// Notification Settings Functions
+function toggleNotifications(enabled) {
+    userSettings.enableNotifications = enabled;
+    saveSettings();
+    
+    if (enabled) {
+        requestNotificationPermission();
+    }
+    addActivity(`Notifications ${enabled ? 'enabled' : 'disabled'}`);
+}
+
+function setNotificationThreshold(threshold) {
+    userSettings.notificationTimeoutThreshold = parseInt(threshold);
+    saveSettings();
+    addActivity(`Notification threshold set to ${threshold}ms`);
+}
+
+function toggleSoundAlerts(enabled) {
+    userSettings.soundAlerts = enabled;
+    saveSettings();
+    addActivity(`Sound alerts ${enabled ? 'enabled' : 'disabled'}`);
+}
+
+function setAlertVolume(volume) {
+    userSettings.alertVolume = parseInt(volume);
+    document.getElementById('volume-display').textContent = volume + '%';
+    saveSettings();
+    addActivity(`Alert volume set to ${volume}%`);
+}
+
+// Advanced Network Settings Functions
+function toggleIPv6Support(enabled) {
+    userSettings.ipv6Support = enabled;
+    saveSettings();
+    addActivity(`IPv6 support ${enabled ? 'enabled' : 'disabled'}`);
+}
+
+function setDnsServers(servers) {
+    userSettings.dnsServers = servers;
+    saveSettings();
+    addActivity('Custom DNS servers updated');
+}
+
+function setRetryAttempts(attempts) {
+    userSettings.retryAttempts = parseInt(attempts);
+    saveSettings();
+    addActivity(`Retry attempts set to ${attempts}`);
+}
+
+function setConnectionTestInterval(interval) {
+    userSettings.connectionTestInterval = parseInt(interval);
+    saveSettings();
+    addActivity(`Connection test interval set to ${interval} seconds`);
+}
+
+// Security & Privacy Settings Functions
+function toggleIPAnonymization(enabled) {
+    userSettings.anonymizeIPs = enabled;
+    saveSettings();
+    addActivity(`IP anonymization ${enabled ? 'enabled' : 'disabled'}`);
+}
+
+function toggleClearDataOnClose(enabled) {
+    userSettings.clearDataOnClose = enabled;
+    saveSettings();
+    addActivity(`Clear data on close ${enabled ? 'enabled' : 'disabled'}`);
+    
+    if (enabled) {
+        setupClearDataOnClose();
+    }
+}
+
+function setGeolocationPrecision(precision) {
+    userSettings.geolocationPrecision = precision;
+    saveSettings();
+    addActivity(`Geolocation precision set to ${precision} level`);
+}
+
+function toggleMaliciousDomainBlocking(enabled) {
+    userSettings.blockMaliciousDomains = enabled;
+    saveSettings();
+    addActivity(`Malicious domain blocking ${enabled ? 'enabled' : 'disabled'}`);
+}
+
+// Accessibility Settings Functions
+function toggleHighContrast(enabled) {
+    userSettings.highContrast = enabled;
+    applySettings();
+    saveSettings();
+    addActivity(`High contrast mode ${enabled ? 'enabled' : 'disabled'}`);
+}
+
+function setFontSize(size) {
+    userSettings.fontSize = size;
+    applySettings();
+    saveSettings();
+    addActivity(`Font size set to ${size}`);
+}
+
+function toggleReduceMotion(enabled) {
+    userSettings.reduceMotion = enabled;
+    applySettings();
+    saveSettings();
+    addActivity(`Reduce motion ${enabled ? 'enabled' : 'disabled'}`);
+}
+
+// Developer Settings Functions
+function toggleDebugMode(enabled) {
+    userSettings.debugMode = enabled;
+    saveSettings();
+    addActivity(`Debug mode ${enabled ? 'enabled' : 'disabled'}`);
+    
+    if (enabled) {
+        console.log('NetScope Debug Mode Enabled');
+        addActivity('Debug mode activated - check browser console for detailed logs');
+    }
+}
+
+function setCustomAPIEndpoints(endpoints) {
+    try {
+        if (endpoints.trim()) {
+            JSON.parse(endpoints); // Validate JSON
+        }
+        userSettings.apiEndpoints = endpoints;
+        saveSettings();
+        addActivity('Custom API endpoints updated');
+    } catch (e) {
+        alert('Invalid JSON format for API endpoints');
+        addActivity('Failed to update API endpoints - invalid JSON');
+    }
+}
+
+function exportRawData() {
+    const rawData = {
+        settings: userSettings,
+        activities: recentActivities,
+        timestamp: new Date().toISOString(),
+        version: '2.0.0'
+    };
+    
+    const dataStr = JSON.stringify(rawData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = `netscope-rawdata-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    
+    addActivity('Raw data exported');
+}
+
+function setConsoleLogging(level) {
+    userSettings.consoleLogging = level;
+    saveSettings();
+    addActivity(`Console logging level set to ${level}`);
+}
+
+// Helper Functions for New Features
+function requestNotificationPermission() {
+    if ('Notification' in window) {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                new Notification('NetScope Notifications Enabled', {
+                    body: 'You will now receive network status notifications',
+                    icon: '/favicon.ico'
+                });
+            }
+        });
+    }
+}
+
+function setupClearDataOnClose() {
+    window.addEventListener('beforeunload', () => {
+        if (userSettings.clearDataOnClose) {
+            localStorage.removeItem('netscope-settings');
+            localStorage.removeItem('netscope-activities');
+        }
+    });
+}
+
+let backgroundMonitoringInterval = null;
+
+function startBackgroundMonitoring() {
+    if (backgroundMonitoringInterval) return;
+    
+    backgroundMonitoringInterval = setInterval(() => {
+        // Simulate background network monitoring
+        if (userSettings.debugMode) {
+            console.log('Background monitoring check');
+        }
+    }, userSettings.connectionTestInterval * 1000);
+}
+
+function stopBackgroundMonitoring() {
+    if (backgroundMonitoringInterval) {
+        clearInterval(backgroundMonitoringInterval);
+        backgroundMonitoringInterval = null;
+    }
 }
 
 // Enhanced openSettings function
