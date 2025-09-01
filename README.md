@@ -1,42 +1,87 @@
 # NetScope
 
-> Et avanceret Python-værktøj med interaktiv menu til netværkstest, ping, DNS-opslag, geolokation og WiFi-information.
+> Et omfattende netværksdiagnostik værktøj med både Python desktop-version og moderne web-interface til netværkstest, ping, DNS-opslag, geolokation og WiFi-information.
 
 ---
 
-## Funktioner
+## 🚀 Versioner
 
-**Netværk:**
-- Ping domæne/IP (vælg selv mål og antal forsøg)
-- DNS-opslag (find IP fra domæne)
-- Geolokation for IP-adresser
-- Vis din lokale IP
-- Vis standard-servere
+### 🖥️ **Desktop Version (Python)**
+Kraftfuld kommandolinje-værktøj med fuld systemadgang
 
-**WiFi (kun Windows):**
+### 🌐 **Web Version (HTML/CSS/JS)**
+Moderne browser-baseret interface med avancerede indstillinger
+
+---
+
+## ✨ Funktioner
+
+### **🌐 Netværksværktøjer:**
+- **Ping Test**: Domæne/IP med valgbare antal forsøg og timeout
+- **DNS Opslag**: Konverter domæner til IP-adresser
+- **IP Geolokation**: Find geografisk placering af IP-adresser
+- **Lokal IP**: Vis din nuværende lokale IP-adresse
+- **Standard Servere**: Overvåg forbindelse til almindelige internet-services
+
+### **📶 WiFi Værktøjer (kun desktop version):**
 - Vis WiFi-navn og password for nuværende netværk
 - Se alle synlige WiFi-netværk (SSID'er)
-- Se detaljeret info om alle synlige WiFi-netværk (signalstyrke, sikkerhed, m.m.)
-- Vælg et gemt netværk og se dets password
+- Detaljeret info om WiFi-netværk (signalstyrke, sikkerhed, m.m.)
+- Hent gemte WiFi-passwords
 
-**Generelt:**
-- Pinger og viser min/avg/max svartider og pakketab
-- Henter geolokation for IP-adresser
-- Viser detaljerede og brugervenlige fejlmeddelelser
-- Understøtter både Windows og Linux/Mac (WiFi-funktioner kun Windows)
+### **⚙️ Web Version - Avancerede Indstillinger:**
+
+#### 🎨 **Udseende**
+- **Tema**: Mørkt, lyst eller automatisk
+- **Accent farver**: 6 forskellige farver (blå, grøn, rød, gul, lilla, pink)
+
+#### ⚡ **Ydeevne**
+- Kontrollerbare samtidige pings (1-10)
+- DNS caching med konfigurerbar varighed
+- Baggrundsovervågning af netværksstatus
+
+#### 🔔 **Notifikationer**
+- Browser notifikationer for netværksproblemer
+- Konfigurerbare timeout-grænser
+- Lyd alarmer med justerbar lydstyrke
+
+#### 🛡️ **Sikkerhed & Privatliv**
+- IP anonymisering i logs
+- Automatisk data sletning ved lukning
+- Blokering af mistænkelige domæner
+- Konfigurerbar geolokation præcision
+
+#### ♿ **Tilgængelighed**
+- Høj kontrast tilstand
+- Skalerbare skriftstørrelser
+- Reducerede animationer for tilgængelighed
+
+#### 👨‍💻 **Udviklerindstillinger**
+- Debug tilstand med detaljerede logs
+- Brugerdefinerede API endpoints
+- Rådata eksport
+- Konfigurerbart logging niveau
 
 ---
 
-## Krav
+## 📋 Krav
 
+### Desktop Version:
 - Python 3.x
+- Windows (for WiFi-funktioner)
 - Internetforbindelse
 
+### Web Version:
+- Moderne webbrowser
+- Internetforbindelse
+- JavaScript aktiveret
+
 ---
 
-## Installation
+## 📥 Installation
 
-1. Download eller klon dette repository:
+### Desktop Version:
+1. Klon repository:
    ```powershell
    git clone https://github.com/MrFawsDK/NetScope.git
    ```
@@ -44,17 +89,27 @@
    ```powershell
    cd NetScope
    ```
+3. Kør programmet:
+   ```powershell
+   python advanced_pingtool.py
+   ```
+
+### Web Version:
+1. Naviger til `web/` mappen
+2. Åbn `index.html` i din browser
+3. Eller host filen på en webserver for fuld funktionalitet
 
 ---
 
-## Brug
+## 🎯 Brug
 
+### Desktop Version:
 Kør programmet med:
 ```powershell
 python advanced_pingtool.py
 ```
 
-Du får en interaktiv menu, hvor du kan vælge:
+Du får en interaktiv menu:
 
 ```
 === NetScope Menu ===
@@ -71,7 +126,27 @@ Du får en interaktiv menu, hvor du kan vælge:
 =====================
 ```
 
-Ved fejl får du tydelige beskeder med forslag til løsning.
+### Web Version:
+1. Åbn `web/index.html` i din browser
+2. Naviger med sidebar-menuen:
+   - **Dashboard**: Oversigt og statistikker
+   - **Ping Test**: Test netværksforbindelser
+   - **DNS Lookup**: Konverter domæner til IP'er
+   - **IP Geolocation**: Find geografisk placering
+   - **Local IP**: Se din lokale IP
+   - **Standard Servers**: Overvåg almindelige services
+   - **WiFi Tools**: WiFi information (begrænset i browser)
+   - **Indstillinger**: Omfattende konfigurations-muligheder
+
+### Indstillinger (Web Version):
+- **Tema & Farver**: Tilpas udseendet efter dine præferencer
+- **Ydeevne**: Optimer hastighed og ressourceforbrug
+- **Notifikationer**: Konfigurer alarmer og advarsler
+- **Sikkerhed**: Kontroller data-privatliv og anonymisering
+- **Tilgængelighed**: Tilpas for bedre brugbarhed
+- **Udvikler**: Avancerede funktioner til debugging
+
+Alle indstillinger gemmes automatisk i din browser og huskes mellem sessioner.
 
 ---
 
@@ -92,37 +167,103 @@ Synlige WiFi-netværk:
 - HomeNetwork
 - GuestNetwork
 
-Detaljeret info om synlige WiFi-netværk:
-SSID 1 : HomeNetwork
-    Network type            : Infrastructure
-    Authentication          : WPA2-Personal
-    Encryption              : CCMP
-    Signal                  : 85%
-    ...
+## 📖 Eksempler
+
+### Desktop Version Eksempler:
+
+**Ping Test:**
+```
+=== PING RESULTATER ===
+Target: google.com
+Sent: 4, Received: 4, Loss: 0.0%
+Min: 12ms, Avg: 15ms, Max: 19ms
 ```
 
-**Gemte WiFi-netværk:**
+**WiFi Information:**
 ```
-Gemte WiFi-netværk:
-1. HomeNetwork
-2. GuestNetwork
-Vælg nummer på netværk for at se password: 1
 WiFi-navn: HomeNetwork
 WiFi-password: hemmeligtpassword123
 ```
 
+**Geolokation:**
+```
+IP: 8.8.8.8
+Land: United States
+By: Mountain View
+ISP: Google LLC
+```
+
+### Web Version Features:
+
+**Dashboard:**
+- Real-time netværksstatus
+- Aktivitetslog med timestamps
+- Hurtige statistikker
+
+**Avancerede Indstillinger:**
+- Persistent lagring i localStorage
+- Import/export af konfigurationer
+- Real-time tema skift
+- Tilgængelighedstilpasninger
+
 ---
 
-## Tilpasning
+## 🏗️ Projektstruktur
 
-- Tilføj eller fjern servere i listen `SERVERS` i `advanced_pingtool.py`
-- Udvid med flere funktioner efter behov
+```
+NetScope/
+├── advanced_pingtool.py    # Hovedprogram (desktop)
+├── network_utils.py        # Netværksfunktioner
+├── wifi_utils.py          # WiFi funktioner (Windows)
+├── web/                   # Web version
+│   ├── index.html         # Hovedside
+│   ├── style.css          # Styling og temaer
+│   ├── script.js          # Funktionalitet og indstillinger
+│   └── README.md          # Web-specifik dokumentation
+├── README.md              # Denne fil
+└── LICENSE                # Licens information
+```
 
 ---
 
-## Licens
+## 🔧 Tilpasning
+
+### Desktop Version:
+- Modificer `SERVERS` listen i `advanced_pingtool.py`
+- Tilføj nye netværksfunktioner i `network_utils.py`
+- Udvid WiFi-funktioner i `wifi_utils.py`
+
+### Web Version:
+- Tilpas farver og tema i `style.css`
+- Tilføj nye funktioner i `script.js`
+- Konfigurer API endpoints i indstillinger
+
+---
+
+## 🤝 Bidrag
+
+Vi velkommer bidrag! Åbn gerne en issue eller submit en pull request.
+
+---
+
+## 📄 Licens
 
 Se LICENSE-filen for detaljer.
+
+---
+
+## 👨‍💻 Udviklet af
+
+**FawsDev**
+- Website: [fawsdev.dk](https://fawsdev.dk)
+- GitHub: [@MrFawsDK](https://github.com/MrFawsDK)
+
+---
+
+## 📊 Version History
+
+- **v2.0.0**: Web interface med avancerede indstillinger
+- **v1.0.0**: Initial Python desktop version
 
 ---
 
