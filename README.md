@@ -1,4 +1,4 @@
-# Advanced PingTool
+# NetScope
 
 > Et avanceret Python-værktøj med interaktiv menu til netværkstest, ping, DNS-opslag, geolokation og WiFi-information.
 
@@ -38,11 +38,11 @@
 
 1. Download eller klon dette repository:
    ```powershell
-   git clone https://github.com/MrFawsDK/PingTool.git
+   git clone https://github.com/MrFawsDK/NetScope.git
    ```
 2. Skift til mappen:
    ```powershell
-   cd PingTool
+   cd NetScope
    ```
 
 ---
@@ -57,7 +57,7 @@ python advanced_pingtool.py
 Du får en interaktiv menu, hvor du kan vælge:
 
 ```
-=== PingTool Menu ===
+=== NetScope Menu ===
 1. Ping domæne/IP
 2. DNS-opslag (find IP fra domæne)
 3. Geolokation for IP

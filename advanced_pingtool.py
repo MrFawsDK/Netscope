@@ -106,7 +106,7 @@ def main():
     print("\nTjek domæner og ping mellem IP'er kan tilføjes efter behov.")
 
 def menu():
-    print("\n=== PingTool Menu ===")
+    print("\n=== NetScope Menu ===")
     print("1. Ping domæne/IP")
     print("2. DNS-opslag (find IP fra domæne)")
     print("3. Geolokation for IP")
@@ -431,7 +431,7 @@ def get_wifi_info():
 
 if __name__ == "__main__":
 
-    print("[DEBUG] Starter PingTool...")
+    print("[DEBUG] Starter NetScope...")
     while True:
         menu()
         valg = input("Vælg handling (1-11): ").strip()

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="da" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetScope - Network Diagnostics</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-network-wired"></i>
+                    <span>NetScope</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Network Tools</div>
+                <ul class="nav-menu">
+                    <li class="nav-item active" onclick="showSection('dashboard')">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item" onclick="showSection('ping')">
+                        <i class="fas fa-satellite-dish"></i>
+                        <span>Ping Test</span>
+                    </li>
+                    <li class="nav-item" onclick="showSection('dns')">
+                        <i class="fas fa-search"></i>
+                        <span>DNS Lookup</span>
+                    </li>
+                    <li class="nav-item" onclick="showSection('geolocation')">
+                        <i class="fas fa-globe"></i>
+                        <span>IP Geolocation</span>
+                    </li>
+                    <li class="nav-item" onclick="showSection('localip')">
+                        <i class="fas fa-home"></i>
+                        <span>Local IP</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Server Management</div>
+                <ul class="nav-menu">
+                    <li class="nav-item" onclick="showSection('servers')">
+                        <i class="fas fa-server"></i>
+                        <span>Standard Servers</span>
+                    </li>
+                    <li class="nav-item" onclick="showSection('wifi')">
+                        <i class="fas fa-wifi"></i>
+                        <span>WiFi Tools</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="theme-switcher">
+                    <button onclick="toggleTheme()" class="theme-btn">
+                        <i class="fas fa-moon"></i>
+                        <span>Dark Mode</span>
+                    </button>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Online</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="page-title">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="pageDescription">Network diagnostics and monitoring tools</p>
+                </div>
+                <div class="top-bar-actions">
+                    <button class="action-icon" onclick="refreshPage()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="action-icon" onclick="openSettings()">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Dashboard -->
+                <div id="dashboard" class="section active">
+                    <div class="dashboard-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="avgLatency">--</div>
+                                <div class="metric-label">Avg Latency</div>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="successRate">--</div>
+                                <div class="metric-label">Success Rate</div>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="serversOnline">--</div>
+                                <div class="metric-label">Servers Online</div>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="yourIP">--</div>
+                                <div class="metric-label">Your IP</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-panels">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3>Quick Actions</h3>
+                            </div>
+                            <div class="panel-content">
+                                <div class="quick-actions">
+                                    <button class="quick-btn" onclick="quickPing()">
+                                        <i class="fas fa-bolt"></i>
+                                        Quick Ping
+                                    </button>
+                                    <button class="quick-btn" onclick="showSection('dns')">
+                                        <i class="fas fa-search"></i>
+                                        DNS Lookup
+                                    </button>
+                                    <button class="quick-btn" onclick="showSection('servers')">
+                                        <i class="fas fa-list"></i>
+                                        Server Status
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3>Recent Activity</h3>
+                            </div>
+                            <div class="panel-content">
+                                <div id="recentActivity" class="activity-list">
+                                    <div class="activity-item">
+                                        <i class="fas fa-circle activity-dot"></i>
+                                        <span>Application started</span>
+                                        <span class="activity-time">just now</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ping Section -->
+                <div id="ping" class="section">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-satellite-dish"></i>
+                        </div>
+                        <div class="tool-info">
+                            <h2>Ping Test</h2>
+                            <p>Test network connectivity and measure latency to hosts</p>
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <div class="input-group">
+                            <label for="pingTargets">Target Hosts</label>
+                            <input type="text" id="pingTargets" placeholder="google.com, 8.8.8.8 (or leave empty for defaults)">
+                            <small>Separate multiple targets with commas</small>
+                        </div>
+                        <div class="input-group">
+                            <label for="pingCount">Ping Count</label>
+                            <input type="number" id="pingCount" value="4" min="1" max="10">
+                        </div>
+                        <button onclick="performPing()" class="primary-btn">
+                            <i class="fas fa-play"></i>
+                            Start Ping Test
+                        </button>
+                    </div>
+
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h3>Test Results</h3>
+                            <button onclick="clearResults('pingResults')" class="clear-btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div id="pingResults" class="terminal-output"></div>
+                    </div>
+                </div>
+
+                <!-- DNS Section -->
+                <div id="dns" class="section">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="tool-info">
+                            <h2>DNS Lookup</h2>
+                            <p>Resolve domain names to IP addresses</p>
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <div class="input-group">
+                            <label for="dnsInput">Domain Name</label>
+                            <input type="text" id="dnsInput" placeholder="example.com">
+                        </div>
+                        <button onclick="performDNS()" class="primary-btn">
+                            <i class="fas fa-search"></i>
+                            Lookup
+                        </button>
+                    </div>
+
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h3>DNS Results</h3>
+                            <button onclick="clearResults('dnsResults')" class="clear-btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div id="dnsResults" class="terminal-output"></div>
+                    </div>
+                </div>
+
+                <!-- Geolocation Section -->
+                <div id="geolocation" class="section">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="tool-info">
+                            <h2>IP Geolocation</h2>
+                            <p>Find geographic location of IP addresses</p>
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <div class="input-group">
+                            <label for="geoInput">IP Address</label>
+                            <input type="text" id="geoInput" placeholder="8.8.8.8">
+                        </div>
+                        <button onclick="performGeolocation()" class="primary-btn">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Find Location
+                        </button>
+                    </div>
+
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h3>Location Results</h3>
+                            <button onclick="clearResults('geoResults')" class="clear-btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div id="geoResults" class="terminal-output"></div>
+                    </div>
+                </div>
+
+                <!-- Local IP Section -->
+                <div id="localip" class="section">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="tool-info">
+                            <h2>Local IP Address</h2>
+                            <p>Discover your local network IP address</p>
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <button onclick="getLocalIP()" class="primary-btn">
+                            <i class="fas fa-search"></i>
+                            Get Local IP
+                        </button>
+                    </div>
+
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h3>IP Information</h3>
+                            <button onclick="clearResults('localipResults')" class="clear-btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div id="localipResults" class="terminal-output"></div>
+                    </div>
+                </div>
+
+                <!-- Servers Section -->
+                <div id="servers" class="section">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="tool-info">
+                            <h2>Standard Servers</h2>
+                            <p>Monitor connectivity to common internet services</p>
+                        </div>
+                    </div>
+
+                    <div class="servers-grid">
+                        <div class="server-card" data-server="google.com">
+                            <div class="server-status"></div>
+                            <div class="server-name">Google DNS</div>
+                            <div class="server-host">google.com</div>
+                            <div class="server-latency">-- ms</div>
+                        </div>
+                        <div class="server-card" data-server="cloudflare.com">
+                            <div class="server-status"></div>
+                            <div class="server-name">Cloudflare</div>
+                            <div class="server-host">cloudflare.com</div>
+                            <div class="server-latency">-- ms</div>
+                        </div>
+                        <div class="server-card" data-server="1.1.1.1">
+                            <div class="server-status"></div>
+                            <div class="server-name">Cloudflare DNS</div>
+                            <div class="server-host">1.1.1.1</div>
+                            <div class="server-latency">-- ms</div>
+                        </div>
+                        <div class="server-card" data-server="8.8.8.8">
+                            <div class="server-status"></div>
+                            <div class="server-name">Google DNS</div>
+                            <div class="server-host">8.8.8.8</div>
+                            <div class="server-latency">-- ms</div>
+                        </div>
+                        <div class="server-card" data-server="github.com">
+                            <div class="server-status"></div>
+                            <div class="server-name">GitHub</div>
+                            <div class="server-host">github.com</div>
+                            <div class="server-latency">-- ms</div>
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <button onclick="pingAllServers()" class="primary-btn">
+                            <i class="fas fa-sync"></i>
+                            Test All Servers
+                        </button>
+                    </div>
+
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h3>Server Test Results</h3>
+                            <button onclick="clearResults('serversResults')" class="clear-btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div id="serversResults" class="terminal-output"></div>
+                    </div>
+                </div>
+
+                <!-- WiFi Section -->
+                <div id="wifi" class="section">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <div class="tool-info">
+                            <h2>WiFi Tools</h2>
+                            <p>WiFi network management and diagnostics</p>
+                        </div>
+                    </div>
+
+                    <div class="warning-card">
+                        <div class="warning-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="warning-content">
+                            <h4>Browser Limitation</h4>
+                            <p>WiFi management functions require system-level access and are not available in web browsers for security reasons.</p>
+                            <p>Please use the desktop version of NetScope for WiFi functionality.</p>
+                        </div>
+                    </div>
+
+                    <div class="disabled-functions">
+                        <div class="disabled-function">
+                            <i class="fas fa-ban"></i>
+                            <span>Current WiFi Network Info</span>
+                        </div>
+                        <div class="disabled-function">
+                            <i class="fas fa-ban"></i>
+                            <span>Visible WiFi Networks</span>
+                        </div>
+                        <div class="disabled-function">
+                            <i class="fas fa-ban"></i>
+                            <span>Detailed WiFi Information</span>
+                        </div>
+                        <div class="disabled-function">
+                            <i class="fas fa-ban"></i>
+                            <span>Saved WiFi Passwords</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>&copy; 2025 NetScope - Developed by <strong><a href="https://fawsdev.dk" target="_blank" rel="noopener noreferrer">FawsDev</a></strong></p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
