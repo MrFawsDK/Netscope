@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetScope Dokumentation</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico">
+    <script src="https://kit.fontawesome.com/2c36e9b7b6.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo" style="cursor:pointer;display:flex;align-items:center;gap:0.75rem;font-size:1.25rem;font-weight:600;color:var(--text-primary);" onclick="window.location.href='forside.html'">
+                    <i class="fas fa-network-wired" style="color:var(--accent-color);font-size:1.5rem;"></i>
+                    <span>NetScope</span>
+                </div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Dokumentation</div>
+                <ul class="nav-menu">
+                    <li class="nav-item" onclick="window.location.href='forside.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Forside</span>
+                    </li>
+                    <li class="nav-item" onclick="window.location.href='index.html'">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item active">
+                        <i class="fas fa-book"></i>
+                        <span>Docs</span>
+                    </li>
+                </ul>
+                <div class="nav-title" style="margin-top:2rem;">Guides &amp; Sektioner</div>
+                <ul class="nav-menu">
+                    <li class="nav-item" onclick="document.getElementById('install').scrollIntoView({behavior:'smooth'})">
+                        <i class="fas fa-download"></i>
+                        <span>Installation</span>
+                    </li>
+                    <li class="nav-item" onclick="document.getElementById('python').scrollIntoView({behavior:'smooth'})">
+                        <i class="fab fa-python"></i>
+                        <span>Python Modul</span>
+                    </li>
+                    <li class="nav-item" onclick="document.getElementById('web').scrollIntoView({behavior:'smooth'})">
+                        <i class="fas fa-desktop"></i>
+                        <span>Web Dashboard</span>
+                    </li>
+                    <li class="nav-item" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+                        <i class="fas fa-cogs"></i>
+                        <span>Funktioner</span>
+                    </li>
+                    <li class="nav-item" onclick="document.getElementById('complete-guide').scrollIntoView({behavior:'smooth'})">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Komplet Guide</span>
+                    </li>
+                    <li class="nav-item" onclick="document.getElementById('faq').scrollIntoView({behavior:'smooth'})">
+                        <i class="fas fa-question-circle"></i>
+                        <span>FAQ</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <div class="theme-switcher">
+                    <button onclick="toggleTheme()" class="theme-btn">
+                        <i class="fas fa-moon"></i>
+                        <span>Dark Mode</span>
+                    </button>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Online</span>
+                </div>
+            </div>
+        </nav>
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="page-title">
+                    <h1 style="font-size:2.2rem;color:var(--accent-color);font-weight:800;letter-spacing:0.01em;">NetScope Dokumentation</h1>
+                    <p style="font-size:1.15rem;color:var(--text-secondary);margin-top:0.5rem;">Alt om installation, brug, Python, web og avancerede funktioner</p>
+                </div>
+            </header>
+            <div class="content-area" style="max-width:900px;margin:0 auto;">
+                <!-- Docs Navigation -->
+                <nav style="margin-bottom:2.5rem;">
+                    <ul style="display:flex;gap:2rem;list-style:none;padding:0;">
+                        <li><a href="#install" style="color:var(--accent-color);font-weight:600;font-size:1.1rem;"><i class="fas fa-download"></i> Installation</a></li>
+                        <li><a href="#python" style="color:var(--accent-color);font-weight:600;font-size:1.1rem;"><i class="fab fa-python"></i> Python</a></li>
+                        <li><a href="#web" style="color:var(--accent-color);font-weight:600;font-size:1.1rem;"><i class="fas fa-desktop"></i> Web</a></li>
+                        <li><a href="#features" style="color:var(--accent-color);font-weight:600;font-size:1.1rem;"><i class="fas fa-cogs"></i> Funktioner</a></li>
+                        <li><a href="#faq" style="color:var(--accent-color);font-weight:600;font-size:1.1rem;"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                    </ul>
+                </nav>
+                <!-- Installationsguide -->
+                <section id="install" style="margin-bottom:2.5rem;">
+                    <h2 style="color:var(--accent-color);font-size:1.5rem;margin-bottom:1rem;font-weight:700;"><i class="fas fa-download"></i> Installation</h2>
+                    <div class="settings-group" style="margin-bottom:1.5rem;">
+                        <h3 style="color:var(--accent-color);font-size:1.15rem;margin-bottom:0.5rem;"><i class="fab fa-python"></i> Python</h3>
+                        <pre style="background:var(--secondary-bg);padding:1rem;border-radius:8px;font-size:1.05em;">pip install netscope</pre>
+                        <span style="color:var(--text-secondary);font-size:0.95em;">Kræver Python 3.8+</span>
+                    </div>
+                    <div class="settings-group">
+                        <h3 style="color:var(--accent-color);font-size:1.15rem;margin-bottom:0.5rem;"><i class="fas fa-desktop"></i> Web</h3>
+                        <pre style="background:var(--secondary-bg);padding:1rem;border-radius:8px;font-size:1.05em;">Download eller klon fra GitHub og åbn forside.html eller index.html i din browser.</pre>
+                        <a href="https://github.com/MrFawsDK/NetScope" target="_blank" style="color:var(--accent-color);font-weight:600;"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                </section>
+                <!-- Python Modul Guide -->
+                <section id="python" style="margin-bottom:2.5rem;">
+                    <h2 style="color:var(--accent-color);font-size:1.5rem;margin-bottom:1rem;font-weight:700;"><i class="fab fa-python"></i> Python Modul</h2>
+                    <div class="settings-group">
+                        <p>NetScope kan bruges direkte i Python scripts:</p>
+                        <pre style="background:var(--secondary-bg);padding:1rem;border-radius:8px;font-size:1.05em;">import netscope
+
+# Ping eksempel
+result = netscope.ping('google.com')
+print(result)
+
+# DNS opslag
+dns = netscope.dns_lookup('google.com')
+print(dns)
+
+# Geolokation
+geo = netscope.geoip('8.8.8.8')
+print(geo)
+                        </pre>
+                        <ul style="margin-top:1rem;">
+                            <li><b>ping(host)</b>: Tester svartid til en IP eller domæne</li>
+                            <li><b>dns_lookup(domain)</b>: Finder IP-adresser for domæner</li>
+                            <li><b>geoip(ip)</b>: Finder geografisk placering for IP</li>
+                        </ul>
+                    </div>
+                </section>
+                <!-- Web Dashboard Guide -->
+                <section id="web" style="margin-bottom:2.5rem;">
+                    <h2 style="color:var(--accent-color);font-size:1.5rem;margin-bottom:1rem;font-weight:700;"><i class="fas fa-desktop"></i> Web Dashboard</h2>
+                    <div class="settings-group">
+                        <p>Brug det moderne web-dashboard til at overvåge og teste netværk:</p>
+                        <ul>
+                            <li>Åbn <code>forside.html</code> for landing page og guides</li>
+                            <li>Gå til <code>index.html</code> for dashboard og værktøjer</li>
+                            <li>Skift tema, sprog og indstillinger i menuen</li>
+                        </ul>
+                        <img src="https://raw.githubusercontent.com/MrFawsDK/NetScope/main/web/netscope-dashboard.png" alt="Dashboard screenshot" style="max-width:320px;width:100%;border-radius:12px;box-shadow:0 4px 24px var(--shadow-color);margin-top:1rem;">
+                    </div>
+                </section>
+                <!-- Funktioner -->
+                <section id="features" style="margin-bottom:2.5rem;">
+                    <h2 style="color:var(--accent-color);font-size:1.5rem;margin-bottom:1rem;font-weight:700;"><i class="fas fa-cogs"></i> Funktioner</h2>
+                    <div class="settings-group">
+                        <ul>
+                            <li>Ping test og statistik</li>
+                            <li>DNS opslag og info</li>
+                            <li>Geolokation af IP-adresser</li>
+                            <li>Avancerede indstillinger og temaer</li>
+                            <li>Historik og eksport</li>
+                        </ul>
+                    </div>
+                </section>
+                <!-- Komplet Guide -->
+                <section id="complete-guide" style="margin-bottom:2.5rem;">
+                    <h2 style="color:var(--accent-color);font-size:1.5rem;margin-bottom:1rem;font-weight:700;"><i class="fas fa-graduation-cap"></i> Komplet Guide</h2>
+                    <div class="settings-group">
+                        <h3 style="color:var(--accent-color);font-size:1.15rem;margin-bottom:0.5rem;">Trin-for-trin: Kom i gang med NetScope</h3>
+                        <ol style="font-size:1.05em;line-height:1.7;">
+                            <li><b>Installation:</b> Følg installationsguiden for Python eller web.</li>
+                            <li><b>Opsætning:</b> Start dashboardet eller importer Python-modulet.</li>
+                            <li><b>Ping Test:</b> Indtast IP/domæne og tryk "Start Ping". Se statistik og historik.</li>
+                            <li><b>DNS Opslag:</b> Indtast domæne og tryk "Slå op". Se IP-adresser og DNS info.</li>
+                            <li><b>Geolokation:</b> Indtast IP og tryk "Find placering". Se kort og info.</li>
+                            <li><b>Avancerede Indstillinger:</b> Skift tema, font, kontrast og gem præferencer.</li>
+                            <li><b>Historik &amp; Eksport:</b> Se tidligere tests og eksportér data.</li>
+                            <li><b>Support &amp; Bidrag:</b> Skriv til support eller bidrag på GitHub.</li>
+                        </ol>
+                        <h3 style="color:var(--accent-color);font-size:1.15rem;margin:1.5rem 0 0.5rem 0;">Eksempel på workflow</h3>
+                        <ul style="font-size:1.05em;line-height:1.7;">
+                            <li>Installer NetScope med <code>pip install netscope</code> eller download web-dashboard.</li>
+                            <li>Åbn dashboardet og vælg "Ping Test".</li>
+                            <li>Indtast <code>google.com</code> og tryk start.</li>
+                            <li>Se resultater, statistik og historik.</li>
+                            <li>Skift til mørkt tema for bedre visning.</li>
+                            <li>Eksportér data til CSV for rapportering.</li>
+                        </ul>
+                        <h3 style="color:var(--accent-color);font-size:1.15rem;margin:1.5rem 0 0.5rem 0;">Tips &amp; Tricks</h3>
+                        <ul style="font-size:1.05em;line-height:1.7;">
+                            <li>Brug Python-modulet til automatisering af netværkstests.</li>
+                            <li>Tilpas dashboardet med egne farver og indstillinger.</li>
+                            <li>Se dokumentation for alle funktioner under "Funktioner".</li>
+                            <li>Følg med i udviklingen på GitHub og bidrag med feedback.</li>
+                        </ul>
+                    </div>
+                </section>
+                <!-- FAQ -->
+                <section id="faq" style="margin-bottom:2.5rem;">
+                    <h2 style="color:var(--accent-color);font-size:1.5rem;margin-bottom:1rem;font-weight:700;"><i class="fas fa-question-circle"></i> Ofte stillede spørgsmål</h2>
+                    <div class="settings-group">
+                        <p><strong>Hvordan får jeg support?</strong><br>Du kan skrive til <a href="mailto:support@netscope.dk">support@netscope.dk</a> eller besøge <a href="https://github.com/MrFawsDK/NetScope" target="_blank">GitHub</a>.</p>
+                        <p><strong>Er NetScope gratis?</strong><br>Ja, NetScope er open source og gratis at bruge.</p>
+                        <p><strong>Virker det på Windows, Mac og Linux?</strong><br>Ja, både Python-modulet og web-dashboard virker på alle platforme.</p>
+                        <p><strong>Kan jeg bidrage?</strong><br>Ja! Se <a href="https://github.com/MrFawsDK/NetScope" target="_blank">GitHub</a> for at bidrage med kode eller forslag.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>&copy; 2025 NetScope - Developed by <strong><a href="https://fawsdev.dk" target="_blank" rel="noopener noreferrer">FawsDev</a></strong></p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+        }
+    </script>
+</body>
+</html>

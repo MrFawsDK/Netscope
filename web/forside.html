@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetScope Forside</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico">
+    <script src="https://kit.fontawesome.com/2c36e9b7b6.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo" style="cursor:pointer;display:flex;align-items:center;gap:0.75rem;font-size:1.25rem;font-weight:600;color:var(--text-primary);" onclick="window.location.href='forside.html'">
+                    <i class="fas fa-network-wired" style="color:var(--accent-color);font-size:1.5rem;"></i>
+                    <span>NetScope</span>
+                </div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Navigation</div>
+                <ul class="nav-menu">
+                    <li class="nav-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Forside</span>
+                    </li>
+                    <li class="nav-item" onclick="window.location.href='index.html'">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item" onclick="window.location.href='docs.html'">
+                        <i class="fas fa-book"></i>
+                        <span>Docs</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <div class="theme-switcher">
+                    <button onclick="toggleTheme()" class="theme-btn">
+                        <i class="fas fa-moon"></i>
+                        <span>Dark Mode</span>
+                    </button>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Online</span>
+                </div>
+            </div>
+        </nav>
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="page-title">
+                    <h1 id="pageTitle">Velkommen til NetScope</h1>
+                    <p id="pageDescription">Din moderne platform til netværksdiagnostik og overvågning</p>
+                </div>
+            </header>
+            <div class="content-area">
+                <!-- Forside Sektion -->
+                <section class="forside-section" style="max-width:900px;margin:0 auto;">
+                    <div class="forside-hero" style="display:flex;align-items:center;gap:2.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.5rem;">
+                        <div style="flex:1;min-width:260px;">
+                            <h2 style="font-size:2.5rem;color:var(--accent-color);font-weight:800;margin-bottom:0.5rem;letter-spacing:0.02em;">NetScope</h2>
+                            <p style="font-size:1.2rem;color:var(--text-secondary);margin-bottom:1.5rem;line-height:1.7;">NetScope er et avanceret netværksdiagnostik værktøj til både desktop og web. Overvåg, test og analyser dit netværk med et intuitivt og moderne interface.</p>
+                            <div style="margin-bottom:1.5rem;">
+                                <span style="color:var(--text-muted);font-size:1.05em;">Udviklet af <a href="https://fawsdev.dk" style="color:var(--accent-color);font-weight:600;" target="_blank">FawsDev</a> &mdash; Version 2.0.0</span>
+                            </div>
+                            <button class="forside-btn primary-btn" style="margin-bottom:1.5rem;font-size:1.1rem;padding:0.9rem 2rem;box-shadow:0 2px 12px var(--shadow-color);border-radius:12px;" onclick="window.location.href='index.html'">
+                                <i class="fas fa-tachometer-alt"></i> Gå til Dashboard
+                            </button>
+                            <div style="margin-bottom:2.5rem;">
+                                <a href="docs.html" class="primary-btn" style="font-size:1.1rem;padding:0.9rem 2rem;box-shadow:0 2px 12px var(--shadow-color);border-radius:12px;margin-right:1.5rem;">
+                                    <i class="fas fa-book"></i> Dokumentation &amp; Guides
+                                </a>
+                                <a href="README.md" style="color:var(--accent-color);margin-right:1.5rem;font-weight:500;" target="_blank"><i class="fas fa-book"></i> README</a>
+                                <a href="https://github.com/MrFawsDK/NetScope" style="color:var(--accent-color);font-weight:500;" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            </div>
+                        </div>
+                        <div style="flex:1;min-width:260px;text-align:center;">
+                            <img src="https://raw.githubusercontent.com/MrFawsDK/NetScope/main/web/netscope-hero.png" alt="NetScope illustration" style="max-width:300px;width:100%;border-radius:18px;box-shadow:0 8px 32px var(--shadow-color);background:var(--secondary-bg);border:4px solid var(--accent-color);">
+                            <div style="font-size:1em;color:var(--text-muted);margin-top:0.5rem;">Illustration: Netværksdashboard</div>
+                        </div>
+                    </div>
+                    <!-- Features -->
+                    <div class="forside-features" style="margin-bottom:2.5rem;">
+                        <h3 style="color:var(--accent-color);font-size:1.5rem;margin-bottom:1.2rem;font-weight:700;">Nøglefunktioner</h3>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;">
+                            <div class="feature-card" style="background:linear-gradient(135deg,var(--secondary-bg),var(--primary-bg));border-radius:16px;padding:2rem;box-shadow:0 4px 24px var(--shadow-color);text-align:center;">
+                                <i class="fas fa-download" style="font-size:2.2rem;color:var(--accent-color);"></i>
+                                <h4 style="margin:1rem 0 0.3rem 0;font-size:1.15rem;">Installation</h4>
+                                <p style="color:var(--text-secondary);font-size:1em;">Installér som Python-pakke eller brug web-dashboard</p>
+                            </div>
+                            <div class="feature-card" style="background:linear-gradient(135deg,var(--secondary-bg),var(--primary-bg));border-radius:16px;padding:2rem;box-shadow:0 4px 24px var(--shadow-color);text-align:center;">
+                                <i class="fab fa-python" style="font-size:2.2rem;color:var(--accent-color);"></i>
+                                <h4 style="margin:1rem 0 0.3rem 0;font-size:1.15rem;">Python Modul</h4>
+                                <p style="color:var(--text-secondary);font-size:1em;">Brug NetScope direkte i dine Python scripts</p>
+                            </div>
+                            <div class="feature-card" style="background:linear-gradient(135deg,var(--secondary-bg),var(--primary-bg));border-radius:16px;padding:2rem;box-shadow:0 4px 24px var(--shadow-color);text-align:center;">
+                                <i class="fas fa-desktop" style="font-size:2.2rem;color:var(--accent-color);"></i>
+                                <h4 style="margin:1rem 0 0.3rem 0;font-size:1.15rem;">Web Dashboard</h4>
+                                <p style="color:var(--text-secondary);font-size:1em;">Moderne dashboard med alle værktøjer og guides</p>
+                            </div>
+                            <div class="feature-card" style="background:linear-gradient(135deg,var(--secondary-bg),var(--primary-bg));border-radius:16px;padding:2rem;box-shadow:0 4px 24px var(--shadow-color);text-align:center;">
+                                <i class="fas fa-cogs" style="font-size:2.2rem;color:var(--accent-color);"></i>
+                                <h4 style="margin:1rem 0 0.3rem 0;font-size:1.15rem;">Avancerede Funktioner</h4>
+                                <p style="color:var(--text-secondary);font-size:1em;">Ping, DNS, geolokation, historik og eksport</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Guide/Flow -->
+                    <div class="forside-guide" style="margin-bottom:2.5rem;">
+                        <h3 style="color:var(--accent-color);font-size:1.25rem;margin-bottom:0.8rem;font-weight:700;">Sådan kommer du i gang</h3>
+                        <ol style="text-align:left;max-width:600px;margin:0 auto;color:var(--text-secondary);font-size:1.05em;line-height:1.7;">
+                            <li>Åbn dashboardet og vælg et værktøj</li>
+                            <li>Indtast domæne, IP eller vælg server</li>
+                            <li>Se resultater og statistik i realtid</li>
+                            <li>Tilpas indstillinger for optimal oplevelse</li>
+                        </ol>
+                    </div>
+                    <!-- Ekstra billeder/illustrationer -->
+                    <div class="forside-gallery" style="margin-bottom:2.5rem;">
+                        <h3 style="color:var(--accent-color);font-size:1.25rem;margin-bottom:0.8rem;font-weight:700;">Eksempler &amp; Screenshots</h3>
+                        <div style="display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;">
+                            <img src="https://raw.githubusercontent.com/MrFawsDK/NetScope/main/web/netscope-dashboard.png" alt="Dashboard eksempel" style="max-width:300px;width:100%;border-radius:18px;box-shadow:0 4px 24px var(--shadow-color);background:var(--secondary-bg);border:4px solid var(--accent-color);">
+                            <img src="https://raw.githubusercontent.com/MrFawsDK/NetScope/main/web/netscope-settings.png" alt="Indstillinger eksempel" style="max-width:300px;width:100%;border-radius:18px;box-shadow:0 4px 24px var(--shadow-color);background:var(--secondary-bg);border:4px solid var(--accent-color);">
+                        </div>
+                        <div style="font-size:1em;color:var(--text-muted);margin-top:0.5rem;">Flere billeder og guides findes i dokumentationen</div>
+                    </div>
+                </section>
+                <!-- Branding og links -->
+                <div style="margin-bottom:2.5rem;">
+                    <span style="color:var(--text-muted);font-size:0.95em;">NetScope &mdash; Udviklet af <a href="https://fawsdev.dk" style="color:var(--accent-color);" target="_blank">FawsDev</a></span>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
